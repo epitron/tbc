@@ -1,0 +1,102 @@
+%head
+  %title Transdimensional Brain Chip Comics (easy reader)
+
+  %script{:src => "js/jquery-1.11.1.min.js"}
+
+  :coffeescript
+    $(document).ready ->
+
+      $.getJSON "comics.json", (comics) ->
+
+        preloader = new Image()
+
+        current = ->
+          val = location.hash.slice(1)
+          if val == ""
+            0
+          else
+            parseInt val
+
+        console.log current()
+
+        preload_next = ->
+          preloader.src = comics[current()+1]
+
+        update_comic = ->
+          image = comics[current()]
+          console.log image
+          $("body").css 'background-image': 'url('+image+')'
+          preload_next()
+
+        skip = (n)->
+          jump(current()+n)
+
+        jump = (n)->
+          location.hash = n
+
+        $(window).on 'hashchange', ->
+          if current() >= comics.length
+            jump(comics.length-1)
+          else if current() < 0
+            jump(0)
+          else
+            update_comic()
+
+        $("#fwd").on 'click', ->
+          skip(1)
+        $("#back").on 'click', ->
+          skip(-1)
+
+        update_comic()
+
+        $('body').keydown (e) ->
+          # console.log code: event.keyCode, ident: event.keyIdentifier
+
+          switch event.keyIdentifier
+            when 'Right'
+              skip(1)
+            when 'Left'
+              skip(-1)
+            when 'PageUp'
+              skip(-10)
+            when 'PageDown'
+              skip(10)
+            when 'End'
+              jump(comics.length-1)
+            when 'Home'
+              jump(0)
+
+
+  :css
+    body {
+      margin: 0;
+      padding: 0;
+
+      background-color: black;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      color: #888;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+      overflow: none;
+    }
+
+    #back, #fwd {
+      position: absolute;
+      top: 0px;
+    }
+
+    #back { height: 100%; width: 30%; left: 0px; }
+    #fwd  { height: 100%; width: 30%; right: 0px; }
+
+
+%body
+  #fwd
+  #back

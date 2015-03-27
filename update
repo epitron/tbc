@@ -1,0 +1,5 @@
+echo "Updating index.html..."
+haml index.haml > index.html
+echo "Updating comics.json..."
+ruby genjson.rb
+echo "Done!"
