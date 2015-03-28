@@ -4,7 +4,8 @@ require 'pry'
 
 include OpenCV
 
-Path["slices/"].mkdir
+slicedir = Path["slices/"]
+slicedir.mkdir
 
 files = Path["*.png"].sort
 # files = files.split_before{ |f| f.filename == "143.png" }.last
@@ -13,10 +14,13 @@ letters = [*'A'..'Z']
 
 files.each do |f|
 
-  puts "Slicing #{f}..."
-
+  if (slicedir/"#{f.basename}-A.png").exists?
+    puts "Skipping #{f}..."
+    next
+  else
+    puts "Slicing #{f}..."
+  end
   image = CvMat.load(f.path)
-
 
   puts "#{image.width}x#{image.height}"
 
@@ -38,8 +42,7 @@ files.each do |f|
 
   ranges.each_with_index do |(top, bottom),i|
     next if (top-bottom).abs < 10
-    outfile = f.with(basename: f.basename + "-#{letters[i]}")
-    outfile.dirs << "slices"
+    outfile = slicedir/"#{f.basename}-#{letters[i]}.png"
     p outfile
 
     rect = [0, top, image.width, bottom-top]

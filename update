@@ -1,5 +1,9 @@
-echo "Updating index.html..."
+echo "Scraping..."
+ruby scrape.rb
+echo "Slicing..."
+ruby slice.rb
+echo "Generating index.html..."
 haml index.haml > index.html
-echo "Updating comics.json..."
+echo "Generating comics.json..."
 ruby genjson.rb
 echo "Done!"
