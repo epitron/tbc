@@ -1,7 +1,8 @@
 %head
   %title Transdimensional Brain Chip Comics (easy reader)
 
-  %script{:src => "js/jquery-1.11.1.min.js"}
+  %script{:src => "js/jquery-1.11.2.min.js"}
+  %script{:src => "js/jquery.cookie.js"}
 
   :coffeescript
     $(document).ready ->
@@ -10,14 +11,15 @@
 
         preloader = new Image()
 
+        hash_val = ->
+          location.hash.slice(1)
+
         current = ->
-          val = location.hash.slice(1)
+          val = hash_val()
           if val == ""
             0
           else
             parseInt val
-
-        console.log current()
 
         preload_next = ->
           preloader.src = comics[current()+1]
@@ -32,6 +34,7 @@
           jump(current()+n)
 
         jump = (n)->
+          cookie(n)
           location.hash = n
 
         $(window).on 'hashchange', ->
@@ -47,7 +50,16 @@
         $("#back").on 'click', ->
           skip(-1)
 
-        update_comic()
+        cookie = (set)->
+          if set
+            $.cookie("comic", set)
+          else
+            $.cookie("comic")
+
+        if cookie() and hash_val() == ""
+          location.hash = cookie()
+        else
+          update_comic()
 
         $('body').keydown (e) ->
           # console.log code: event.keyCode, ident: event.keyIdentifier
@@ -91,10 +103,12 @@
     #back, #fwd {
       position: absolute;
       top: 0px;
+      height: 100%;
+      width: 30%; 
     }
 
-    #back { height: 100%; width: 30%; left: 0px; }
-    #fwd  { height: 100%; width: 30%; right: 0px; }
+    #back { left: 0px; }
+    #fwd  { right: 0px; }
 
 
 %body
