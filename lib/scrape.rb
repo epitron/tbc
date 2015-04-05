@@ -56,7 +56,7 @@ class Comic < Struct.new(:n)
 
     ext = File.extname image.uri.path
     image.save(save_path)
-    puts "  |_ wrote #{save_path}, #{File.size panel_filename} bytes"
+    puts "  |_ wrote #{save_path}, #{save_path} bytes"
     puts
   end
 
