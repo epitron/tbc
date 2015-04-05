@@ -1,24 +1,21 @@
 require 'epitools'
 require 'opencv'
-require 'pry'
 
 include OpenCV
 
-slicedir = Path["slices/"]
-slicedir.mkdir
+comicdir = Path["images/comics/"]
+comicdir.mkdir
 
-files = Path["*.png"].sort
-# files = files.split_before{ |f| f.filename == "143.png" }.last
-
+panels = Path["images/panels/*.png"].sort
 letters = [*'A'..'Z']
 
-files.each do |f|
+panels.each do |f|
 
-  if (slicedir/"#{f.basename}-A.png").exists?
+  if (comicdir/"#{f.basename}-A.png").exists?
     puts "Skipping #{f}..."
     next
   else
-    puts "Slicing #{f}..."
+    puts "Slicing panel #{f} into #{comicdir}..."
   end
   image = CvMat.load(f.path)
 
@@ -42,7 +39,7 @@ files.each do |f|
 
   ranges.each_with_index do |(top, bottom),i|
     next if (top-bottom).abs < 10
-    outfile = slicedir/"#{f.basename}-#{letters[i]}.png"
+    outfile = comicdir/"#{f.basename}-#{letters[i]}.png"
     p outfile
 
     rect = [0, top, image.width, bottom-top]

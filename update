@@ -1,9 +1,9 @@
 echo "Scraping..."
-ruby scrape.rb
+ruby lib/scrape.rb
 echo "Slicing..."
-ruby slice.rb
+ruby lib/slice.rb
 echo "Generating index.html..."
-haml index.haml > index.html
+haml views/index.haml > index.html
 echo "Generating comics.json..."
-ruby genjson.rb
+ruby lib/genjson.rb
 echo "Done!"
