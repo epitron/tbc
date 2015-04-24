@@ -1,9 +1,18 @@
+#!/bin/bash
 echo "Scraping..."
 ruby lib/scrape.rb
+
 echo "Slicing..."
 ruby lib/slice.rb
-echo "Generating index.html..."
+
+echo "Compiling..."
+echo "|_ views/index.haml => index.html"
 haml views/index.haml > index.html
+
+echo "|_ js/main.coffee => js/main.js"
+coffee --compile js/main.coffee
+
 echo "Generating comics.json..."
 ruby lib/genjson.rb
+
 echo "Done!"
