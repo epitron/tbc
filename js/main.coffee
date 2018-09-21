@@ -12,9 +12,9 @@ $(document).ready ->
       else
         parseInt val
 
-    preloading     = false
-    queue_barger   = null 
-    preload_errors = []
+    preloading   = false
+    queue_barger = null
+    errors       = []
 
     start_preloading_at = (n)->
       errors[n] ||= 0
@@ -22,7 +22,7 @@ $(document).ready ->
       return if preloading
 
       if queue_barger?
-        n = queue_barger 
+        n = queue_barger
         queue_barger = null
 
       if (url = comics[n])?
@@ -30,6 +30,7 @@ $(document).ready ->
 
         image = new Image()
         image.src = url
+        console.log(image)
 
         image.onabort = image.onerror = ->
           preloading = false
@@ -44,7 +45,7 @@ $(document).ready ->
             start_preloading_at(n)
 
         image.onload = ->
-          consloe.log("loaded "+url)
+          console.log("loaded "+url)
           start_preloading_at(n+1)
 
     preload_next = ->
