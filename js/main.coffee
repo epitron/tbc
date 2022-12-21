@@ -90,18 +90,19 @@ $(document).ready ->
       update_comic()
 
     $('body').keydown (e) ->
-      # console.log code: event.keyCode, ident: event.keyIdentifier
+      # console.log event: event, key: event.key, code: event.keyCode, ident: event.keyIdentifier
 
-      switch event.keyIdentifier
-        when 'Right'
+      switch event.key     # event.keyCode
+        when 'ArrowRight'  # 39
           skip(1)
-        when 'Left'
+        when 'ArrowLeft'   # 37
           skip(-1)
-        when 'PageUp'
+        when 'PageUp'      # 33
           skip(-10)
-        when 'PageDown'
+        when 'PageDown'    # 34
           skip(10)
-        when 'End'
+        when 'End'         # 35
           jump(comics.length-1)
-        when 'Home'
+        when 'Home'        # 36
           jump(0)
+
