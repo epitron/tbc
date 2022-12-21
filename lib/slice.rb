@@ -6,7 +6,7 @@ include OpenCV
 comicdir = Path["images/comics/"]
 comicdir.mkdir
 
-panels = Path["images/panels/*.png"].sort
+panels = Path["images/unsliced/*.png"].sort
 letters = [*'A'..'Z']
 
 panels.each do |f|
